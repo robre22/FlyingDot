@@ -76,8 +76,8 @@ void Canvas::restart()
 	m_player = new Player(-0.4,0,GL_POINTS,color);
 	for(auto& it = m_vObserver.begin()+1; it != m_vObserver.end() ;++it)
 	{
-		static_cast<ObstacleObserver*>((*it))->~ObstacleObserver();
-	}
+		delete *it;
+	}	
 	m_vObserver.clear();
 	m_vObstacle.clear();		
 	m_vObserver.push_back(new EventObserver(m_player,m_Canvas));
@@ -105,7 +105,10 @@ void Canvas::logic()
 				beDeleted = true;
 		}
 		if(beDeleted)
+		{
 			m_vObstacle.erase(m_vObstacle.begin(),m_vObstacle.begin()+1);
+			m_vObserver.erase(m_vObserver.begin()+1,m_vObserver.begin()+2);
+		}
 
 		//player movement
 		float acceleration = 0.0009f;
